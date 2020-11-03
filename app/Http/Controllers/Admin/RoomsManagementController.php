@@ -17,7 +17,7 @@ class RoomsManagementController extends Controller
      */
     public function index()
     {
-        $rooms = Room::paginate(25)->get();
+        $rooms = Room::paginate(25);
 
         return view('roomsmanagement.index', compact('rooms'));
     }
@@ -29,7 +29,7 @@ class RoomsManagementController extends Controller
      */
     public function create()
     {
-        $rooms = Room::paginate(25)->get();
+        $rooms = Room::paginate(25);
         $layout = 'split';
 
         return view('roomsmanagement.index', compact('layout', 'rooms'));
@@ -57,7 +57,7 @@ class RoomsManagementController extends Controller
      */
     public function show(Room $room)
     {
-        $rooms = Room::paginate(25)->get();
+        $rooms = Room::paginate(25);
         $layout = 'split';
 
         return view('roomsmanagement.index', compact('layout', 'rooms'));
@@ -71,7 +71,7 @@ class RoomsManagementController extends Controller
      */
     public function edit(Room $room)
     {
-        $rooms = Room::paginate(25)->get();
+        $rooms = Room::paginate(25);
         $layout = 'split';
 
         return view('roomsmanagement.index', compact('layout', 'room', 'rooms'));
