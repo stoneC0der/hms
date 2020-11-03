@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteRoomTypeRequest;
+use App\Http\Requests\StoreRoomTypeRequest;
+use App\Http\Requests\UpdateRoomTypeRequest;
 use App\Models\RoomType;
-use Illuminate\Http\Request;
 
 class RoomTypesManagementController extends Controller
 {
@@ -15,7 +17,9 @@ class RoomTypesManagementController extends Controller
      */
     public function index()
     {
-        //
+        $roomTypes   = RoomType::all();
+
+        return view('roomtypemanagement.index', compact('roomTypes'));
     }
 
     /**
@@ -25,7 +29,9 @@ class RoomTypesManagementController extends Controller
      */
     public function create()
     {
-        //
+        $layout = 'split';
+
+        return view('roomtypemanagement.index', compact('layout'));
     }
 
     /**
@@ -34,9 +40,13 @@ class RoomTypesManagementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoomTypeRequest $request)
     {
-        //
+        $roomType = $request->processData();
+        
+        $roomType->save();
+
+        return redirect()->route('roomTypes.index');
     }
 
     /**
@@ -47,7 +57,9 @@ class RoomTypesManagementController extends Controller
      */
     public function show(RoomType $roomType)
     {
-        //
+        $layout = 'split';
+
+        return view('roomtypemanagemen.index', compact('roomType'));
     }
 
     /**
@@ -58,7 +70,9 @@ class RoomTypesManagementController extends Controller
      */
     public function edit(RoomType $roomType)
     {
-        //
+        $layout = 'split';
+
+        return view('roomtypemanagemen.index', compact('roomType'));
     }
 
     /**
@@ -68,9 +82,13 @@ class RoomTypesManagementController extends Controller
      * @param  \App\Models\RoomType $roomType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Models $models)
+    public function update(UpdateRoomTypeRequest $request, RoomType $roomType)
     {
-        //
+        $updatedRoomType = $request->processData($roomType);
+
+        $updatedRoomType->save();
+
+        return redirect()->route('roomTypes.index');
     }
 
     /**
@@ -79,8 +97,10 @@ class RoomTypesManagementController extends Controller
      * @param  \App\Models\RoomType $roomType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RoomType $roomType)
+    public function destroy(DeleteRoomTypeRequest $request, RoomType $roomType)
     {
-        //
+        $roomType->delete();
+
+        return redirect()->route('roomTypes.index');
     }
 }
