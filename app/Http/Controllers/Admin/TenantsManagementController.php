@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteTenantRequest;
+use App\Http\Requests\StoreTenantRequest;
+use App\Http\Requests\UpdateTenantRequest;
 use App\Models\Tenant;
-use Illuminate\Http\Request;
 
 class TenantsManagementController extends Controller
 {
@@ -15,7 +17,9 @@ class TenantsManagementController extends Controller
      */
     public function index()
     {
-        //
+        $tenants = Tenant::paginate(25);
+
+        return view('tenantsmanagement.index', compact('tenants'));
     }
 
     /**
@@ -25,7 +29,10 @@ class TenantsManagementController extends Controller
      */
     public function create()
     {
-        //
+        $tenants = Tenant::paginate(25);
+        $layout = 'split';
+
+        return view('tenantsmanagement.index', compact('layout', 'tenants'));
     }
 
     /**
@@ -34,9 +41,12 @@ class TenantsManagementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTenantRequest $request)
     {
-        //
+        $newTenant = $request->processData();
+        $newTenant->save();
+
+        return redirect()->route('tenants.index');
     }
 
     /**
@@ -47,7 +57,10 @@ class TenantsManagementController extends Controller
      */
     public function show(Tenant $tenant)
     {
-        //
+        $tenants = Tenant::paginate(25);
+        $layout = 'split';
+
+        return view('tenantsmanagement.index', compact('layout', 'tenant', 'tenants'));
     }
 
     /**
@@ -58,7 +71,10 @@ class TenantsManagementController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        //
+        $tenants = Tenant::paginate(25);
+        $layout = 'split';
+
+        return view('tenantsmanagement.index', compact('layout', 'tenant', 'tenants'));
     }
 
     /**
@@ -68,9 +84,12 @@ class TenantsManagementController extends Controller
      * @param  \App\Models\Tenant $tenant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tenant $tenant)
+    public function update(UpdateTenantRequest $request, Tenant $tenant)
     {
-        //
+        $updatedTenant = $request->processData($tenant);
+        $updatedTenant->save();
+
+        return redirect()->route('tenants.index');
     }
 
     /**
@@ -79,8 +98,10 @@ class TenantsManagementController extends Controller
      * @param  \App\Models\Tenant $tenant
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tenant $tenant)
+    public function destroy(DeleteTenantRequest $request, Tenant $tenant)
     {
-        //
+        $tenant->delete();
+
+        return redirect()->route('tenants.index');
     }
 }
