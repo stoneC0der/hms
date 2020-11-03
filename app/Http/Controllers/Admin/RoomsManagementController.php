@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteRoomRequest;
+use App\Http\Requests\StoreRoomRequest;
+use App\Http\Requests\UpdateRoomRequest;
 use App\Models\Room;
-use Illuminate\Http\Request;
 
 class RoomsManagementController extends Controller
 {
@@ -15,7 +17,9 @@ class RoomsManagementController extends Controller
      */
     public function index()
     {
-        //
+        $rooms = Room::paginate(25)->get();
+
+        return view('roomsmanagement.index', compact('rooms'));
     }
 
     /**
@@ -25,7 +29,10 @@ class RoomsManagementController extends Controller
      */
     public function create()
     {
-        //
+        $rooms = Room::paginate(25)->get();
+        $layout = 'split';
+
+        return view('roomsmanagement.index', compact('layout', 'rooms'));
     }
 
     /**
@@ -34,9 +41,12 @@ class RoomsManagementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoomRequest $request)
     {
-        //
+        $room = $request->processData();
+        $room->save();
+
+        return redirect()->route('rooms.index');
     }
 
     /**
@@ -47,7 +57,10 @@ class RoomsManagementController extends Controller
      */
     public function show(Room $room)
     {
-        //
+        $rooms = Room::paginate(25)->get();
+        $layout = 'split';
+
+        return view('roomsmanagement.index', compact('layout', 'rooms'));
     }
 
     /**
@@ -58,7 +71,10 @@ class RoomsManagementController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+        $rooms = Room::paginate(25)->get();
+        $layout = 'split';
+
+        return view('roomsmanagement.index', compact('layout', 'room', 'rooms'));
     }
 
     /**
@@ -68,9 +84,12 @@ class RoomsManagementController extends Controller
      * @param  \App\Models\Room $room
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Room $room)
+    public function update(UpdateRoomRequest $request, Room $room)
     {
-        //
+        $updatedRoom = $request->processData($room);
+        $updatedRoom->save();
+
+        return redirect()->route('rooms.index');
     }
 
     /**
@@ -79,8 +98,10 @@ class RoomsManagementController extends Controller
      * @param  \App\Models\Room $room
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Room $room)
+    public function destroy(DeleteRoomRequest $request,Room $room)
     {
-        //
+        $room->delete();
+
+        return redirect()->route('rooms.index');
     }
 }
