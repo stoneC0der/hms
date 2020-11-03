@@ -1,4 +1,7 @@
 # Todo List
 
-- Add custom message in store/update request
+- Add custom message in forms requests
 - Add users management
+- Add flash messages
+- Add realtime notifications
+- Check if a room is not booked/rent before deleting it (room & roomType as well tenant)
