@@ -20,7 +20,7 @@ class RoomTypesManagementController extends Controller
         $roomTypes   = RoomType::all();
         $layout      = 'full';
 
-        return view('roomtypemanagement.index', compact('roomTypes'));
+        return view('roomtypesmanagement.index', compact('roomTypes', 'layout'));
     }
 
     /**
@@ -33,7 +33,7 @@ class RoomTypesManagementController extends Controller
         $layout = 'split';
         $roomTypes   = RoomType::all();
 
-        return view('roomtypemanagement.index', compact('layout'));
+        return view('roomtypesmanagement.index', compact('layout', 'roomTypes'));
     }
 
     /**
@@ -62,7 +62,7 @@ class RoomTypesManagementController extends Controller
         $roomTypes   = RoomType::all();
         $layout = 'split';
 
-        return view('roomtypemanagemen.index', compact('roomType', 'roomTypes', 'layout'));
+        return view('roomtypesmanagement.index', compact('roomType', 'roomTypes', 'layout'));
     }
 
     /**
@@ -76,7 +76,7 @@ class RoomTypesManagementController extends Controller
         $roomTypes   = RoomType::all();
         $layout = 'split';
 
-        return view('roomtypemanagemen.index', compact('roomType', 'roomTypes', 'layout'));
+        return view('roomtypesmanagement.index', compact('roomType', 'roomTypes', 'layout'));
     }
 
     /**
