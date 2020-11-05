@@ -24,7 +24,12 @@ class DeleteRoomRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'    => 'required|exists:rooms,id',
+            //
         ];
+    }
+
+    public function processData($room)
+    {
+        return $room->delete();
     }
 }
