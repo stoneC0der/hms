@@ -15,7 +15,7 @@ class UpdateTenantRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->aut();
+        return auth()->check();
     }
 
     /**

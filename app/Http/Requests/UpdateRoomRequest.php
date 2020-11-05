@@ -15,7 +15,7 @@ class UpdateRoomRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->auth();
+        return auth()->check();
     }
 
     /**
