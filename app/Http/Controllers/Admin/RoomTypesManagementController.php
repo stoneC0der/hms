@@ -75,8 +75,8 @@ class RoomTypesManagementController extends Controller
     {
         $roomTypes   = RoomType::all();
         $layout = 'split';
-
-        return view('roomtypesmanagement.index', compact('roomType', 'roomTypes', 'layout'));
+        $room_type = $roomType;
+        return view('roomtypesmanagement.index', compact('room_type', 'roomTypes', 'layout'));
     }
 
     /**
