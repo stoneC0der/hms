@@ -7,6 +7,7 @@ use App\Http\Requests\DeleteRoomRequest;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use App\Models\Room;
+use App\Models\RoomType;
 
 class RoomsManagementController extends Controller
 {
@@ -18,8 +19,10 @@ class RoomsManagementController extends Controller
     public function index()
     {
         $rooms = Room::paginate(25);
+        $layout = 'full';
+        $roomTypes = RoomType::pluck('type', 'id');
 
-        return view('roomsmanagement.index', compact('rooms'));
+        return view('roomsmanagement.index', compact('rooms', 'layout', 'roomTypes'));
     }
 
     /**
@@ -29,10 +32,11 @@ class RoomsManagementController extends Controller
      */
     public function create()
     {
-        $rooms = Room::paginate(25);
+        $rooms = Room::with('type')->paginate(25);
         $layout = 'split';
+        $roomTypes = RoomType::pluck('type', 'id');
 
-        return view('roomsmanagement.index', compact('layout', 'rooms'));
+        return view('roomsmanagement.index', compact('layout', 'rooms', 'roomTypes'));
     }
 
     /**
@@ -59,8 +63,9 @@ class RoomsManagementController extends Controller
     {
         $rooms = Room::paginate(25);
         $layout = 'split';
+        $roomTypes = RoomType::pluck('type', 'id');
 
-        return view('roomsmanagement.index', compact('layout', 'rooms'));
+        return view('roomsmanagement.index', compact('layout', 'rooms', 'roomTypes', 'room'));
     }
 
     /**
@@ -73,8 +78,10 @@ class RoomsManagementController extends Controller
     {
         $rooms = Room::paginate(25);
         $layout = 'split';
+        $e_room = $room;
+        $roomTypes = RoomType::pluck('type', 'id');
 
-        return view('roomsmanagement.index', compact('layout', 'room', 'rooms'));
+        return view('roomsmanagement.index', compact('layout', 'rooms', 'roomTypes', 'e_room'));
     }
 
     /**
@@ -100,7 +107,7 @@ class RoomsManagementController extends Controller
      */
     public function destroy(DeleteRoomRequest $request,Room $room)
     {
-        $room->delete();
+        $request->processData($room);
 
         return redirect()->route('rooms.index');
     }
