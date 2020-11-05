@@ -26,7 +26,7 @@
 
         {{-- Email field --}}
         <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+            <input type="email" name="email" class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}"
                    value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -42,7 +42,7 @@
 
         {{-- Password field --}}
         <div class="input-group mb-3">
-            <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+            <input type="password" name="password" class="form-control form-control-lg {{ $errors->has('password') ? 'is-invalid' : '' }}"
                    placeholder="{{ __('adminlte::adminlte.password') }}">
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -58,17 +58,25 @@
 
         {{-- Login field --}}
         <div class="row">
-            <div class="col-7">
+            <div class="col-12 order-1">
                 <div class="icheck-primary">
                     <input type="checkbox" name="remember" id="remember">
                     <label for="remember">{{ __('adminlte::adminlte.remember_me') }}</label>
                 </div>
             </div>
-            <div class="col-5">
-                <button type=submit class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
+            <div class="col-12 order-0 mb-3">
+                <button type=submit class="btn btn-lg btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
                     <span class="fas fa-sign-in-alt"></span>
                     {{ __('adminlte::adminlte.sign_in') }}
                 </button>
+                {{-- Password reset link --}}
+                @if($password_reset_url)
+                    <p class="mb-0 mt-2 text-center">
+                        <a href="{{ $password_reset_url }}">
+                            {{ __('adminlte::adminlte.i_forgot_my_password') }}
+                        </a>
+                    </p>
+                @endif
             </div>
         </div>
 
@@ -76,21 +84,27 @@
 @stop
 
 @section('auth_footer')
-    {{-- Password reset link --}}
-    @if($password_reset_url)
-        <p class="my-0">
-            <a href="{{ $password_reset_url }}">
-                {{ __('adminlte::adminlte.i_forgot_my_password') }}
-            </a>
-        </p>
-    @endif
-
-    {{-- Register link --}}
-    @if($register_url)
-        <p class="my-0">
-            <a href="{{ $register_url }}">
-                {{ __('adminlte::adminlte.register_a_new_membership') }}
-            </a>
-        </p>
-    @endif
+<!--
+    <div class="row justify-content-between">
+        <div class="col-8">
+            {{-- Password reset link --}}
+            @if($password_reset_url)
+                <p class="my-0">
+                    <a href="{{ $password_reset_url }}">
+                        {{ __('adminlte::adminlte.i_forgot_my_password') }}
+                    </a>
+                </p>
+            @endif
+        </div>
+        
+        {{-- Register link --}}
+        @if($register_url)
+            <p class="my-0">
+                <a href="{{ $register_url }}">
+                    {{ __('adminlte::adminlte.register') }}
+                </a>
+            </p>
+        @endif
+    </div>
+-->
 @stop

@@ -21,6 +21,12 @@
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
     @yield('adminlte_css_pre')
+    <style>
+        td {
+            vertical-align: middle!important;
+            vertical-align: -webkit-baseline-middle!important;
+        }    
+    </style>
 
     {{-- Base Stylesheets --}}
     @if(!config('adminlte.enabled_laravel_mix'))
@@ -73,10 +79,12 @@
 
 </head>
 
-<body class="@yield('classes_body')" @yield('body_data')>
+<body class="@yield('classes_body')" @yield('body_data') style="{!! Request::is('') ? 'background-image: url(' .asset('/bg.jpg') . ')' : null !!}">
 
     {{-- Body Content --}}
     @yield('body')
+
+    @yield('footer')
 
     {{-- Base Scripts --}}
     @if(!config('adminlte.enabled_laravel_mix'))
