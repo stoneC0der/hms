@@ -30,7 +30,7 @@ class UpdateRoomRequest extends FormRequest
             'room_number'   => [
                 'required',
                 'alpha_num',
-                Rule::unique('room')->ignore(Room::where('room_number', $this->room_number)->orWhere('room_type_id', $this->room_type_id)->first()),
+                Rule::unique('rooms', 'room_number')->ignore($this->room),
             ],
         ];
     }
