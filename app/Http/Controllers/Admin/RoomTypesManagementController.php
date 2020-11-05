@@ -18,6 +18,7 @@ class RoomTypesManagementController extends Controller
     public function index()
     {
         $roomTypes   = RoomType::all();
+        $layout      = 'full';
 
         return view('roomtypemanagement.index', compact('roomTypes'));
     }
@@ -30,6 +31,7 @@ class RoomTypesManagementController extends Controller
     public function create()
     {
         $layout = 'split';
+        $roomTypes   = RoomType::all();
 
         return view('roomtypemanagement.index', compact('layout'));
     }
