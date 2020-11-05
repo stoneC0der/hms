@@ -103,7 +103,7 @@ class RoomTypesManagementController extends Controller
      */
     public function destroy(DeleteRoomTypeRequest $request, RoomType $roomType)
     {
-        $roomType->delete();
+        $request->processData($roomType);
 
         return redirect()->route('roomTypes.index');
     }
