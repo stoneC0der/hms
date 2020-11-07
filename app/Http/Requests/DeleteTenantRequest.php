@@ -24,7 +24,7 @@ class DeleteTenantRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'    => 'required|exists:tenants,id',
+            // 'id'    => 'required|exists:tenants,id',
         ];
     }
 }
