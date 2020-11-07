@@ -17,4 +17,12 @@ class Room extends Model
     {
         return $this->belongsTo(RoomType::class, 'room_type_id');
     }
+
+    public function scopeAvailable($query, $id = null)
+    {
+        if (is_null($id)) {
+            return $query->where('is_available', true);
+        }
+        return $query->where('is_available', true)->orWhere('id', $id);
+    }
 }
