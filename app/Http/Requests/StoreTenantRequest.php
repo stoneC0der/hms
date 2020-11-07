@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTenantRequest extends FormRequest
 {
@@ -27,12 +28,12 @@ class StoreTenantRequest extends FormRequest
         return [
             'first_name'    => 'required|string|max:250',
             'last_name'     => 'required|string|max:250',
-            'phone'         => 'required|regex:/^\((\+233)\)?(0[25][7463]\d{7,})$/', // TODO add the ability to add any valid number.
+            'phone'         => 'required|regex:/^\(?(\+233)?\)?(0[235][7463]\d{7,})$/|unique:tenants,phone', // TODO add the ability to add any valid number.
             'email'         => 'nullable|email|unique:tenants,email',
             'picture'       => 'nullable|image|mimes:png,jpeg,jpg,webp',
             'occupation'    => 'required|string|in:worker,student',
             'where'         => 'required|string',
-        ];
+            ];
     }
 
     public function processData()
