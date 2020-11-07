@@ -18,4 +18,9 @@ class Tenant extends Model
         'occupation',
         'where',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 }
