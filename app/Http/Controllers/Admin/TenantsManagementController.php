@@ -18,8 +18,10 @@ class TenantsManagementController extends Controller
     public function index()
     {
         $tenants = Tenant::paginate(25);
+        $layout = 'full';
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
 
-        return view('tenantsmanagement.index', compact('tenants'));
+        return view('tenantsmanagement.index', compact('tenants', 'layout', 'occupations'));
     }
 
     /**
@@ -31,8 +33,9 @@ class TenantsManagementController extends Controller
     {
         $tenants = Tenant::paginate(25);
         $layout = 'split';
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
 
-        return view('tenantsmanagement.index', compact('layout', 'tenants'));
+        return view('tenantsmanagement.index', compact('layout', 'tenants', 'occupations'));
     }
 
     /**
@@ -73,8 +76,10 @@ class TenantsManagementController extends Controller
     {
         $tenants = Tenant::paginate(25);
         $layout = 'split';
+        $e_tenant = $tenant; // Rename $tenant to avoid collision.
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
 
-        return view('tenantsmanagement.index', compact('layout', 'tenant', 'tenants'));
+        return view('tenantsmanagement.index', compact('layout', 'e_tenant', 'tenants', 'occupations'));
     }
 
     /**
