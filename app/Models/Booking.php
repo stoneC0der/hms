@@ -28,4 +28,23 @@ class Booking extends Model
         'balance',
     ];
 
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function tenants()
+    {
+        return $this->hasMany(Tenant::class, 'id', 'tenant_id');
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function room_type()
+    {
+        return $this->belongsTo(RoomType::class, 'room_type_id');
+    }
 }
