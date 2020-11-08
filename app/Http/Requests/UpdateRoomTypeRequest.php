@@ -25,6 +25,7 @@ class UpdateRoomTypeRequest extends FormRequest
     {
         return [
             'type'                  => 'required|string',
+            'price'                 => 'required|numeric',
             'has_internal_bathroom' => 'nullable|boolean',
         ];
     }
@@ -32,8 +33,12 @@ class UpdateRoomTypeRequest extends FormRequest
     public function processData($room_type)
     {
         $room_type->type = $this->type;
+        $room_type->price = $this->price;
         $room_type->has_internal_bathroom = boolval($this->has_internal_bathroom);
-
+        
+        if (boolval($this->has_internal_bathroom)) {
+            $room_type->price += 30;
+        }
         return $room_type;
     }
 }
