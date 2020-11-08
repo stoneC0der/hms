@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Booking;
 use App\Models\RoomType;
-use App\Models\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class StoreBookingRequest extends FormRequest
 {
@@ -37,7 +36,6 @@ class StoreBookingRequest extends FormRequest
             'where'         => 'required|string',
             'room_id'       => 'required|exists:rooms,id',
             'room_type'     => 'required|exists:room_types,price',
-            'duration'      => 'required|numeric',
             'from'          => 'required|date',
             'to'            => 'required|date',
             'amount'        => 'required|numeric',
@@ -48,10 +46,12 @@ class StoreBookingRequest extends FormRequest
     public function processData()
     {
         $roomType = RoomType::where('price', $this->room_type)->first();
+        $from = Carbon::create($this->from);
+        $to = Carbon::create($this->to);
         $booking = [
             'room_id'   => $this->room_id,
             'tenant_id' => $this->tenant_id,
-            'duration'  => $this->duration,
+            'duration'  => $from->diffInMonths($to),
             'from'      => $this->from,
             'to'        => $this->to,
             'room_type_id'  => $roomType->id,
