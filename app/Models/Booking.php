@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Booking extends Model
 {
@@ -47,4 +48,16 @@ class Booking extends Model
     {
         return $this->belongsTo(RoomType::class, 'room_type_id');
     }
+
+    public function getExpiresInAttribute()
+    {
+        $now = Carbon::now();
+        if ($this->to->eq($now) || $this->to->lt($now)) {
+            $this->expired = boolval(true);
+            $this->save();
+            return 0;
+        }
+        return $this->to->diffInDays(Carbon::now());
+    }
+
 }
