@@ -62,7 +62,7 @@
                                         </td>
                                         <td>
                                             {!! Form::open(['route' => ['rooms.destroy', 'room' => $room->id], 'method' => 'DELETE']) !!}
-                                                <button room_number="submit" class="btn btn-danger btn-block"><i class="fas fa-trash fa-sm fa-fw"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-block"><i class="fas fa-trash fa-sm fa-fw"></i> Delete</button>
                                             {!! Form::close() !!}
                                         </td>
                                     </tr>
