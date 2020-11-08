@@ -9,10 +9,19 @@
                 ) !!}
                 <div class="form-group has-feedback @error('type') is-invalid @enderror">
                     {!! Form::label('type', 'Type', ['class' => 'form-control-label']) !!}
-                    {!! Form::text('type', Route::is('roomTypes.edit') ? $room_type->type ?? old('type') : '', ['class' => 'form-control', 'id' => 'type', 'aria-describedby' => 'type']) !!}
+                    {!! Form::text('type', Route::is('roomTypes.edit') ? $room_type->type ?? old('type') : '', ['class' => 'form-control', 'id' => 'type', 'aria-describedby' => 'type', 'placeholder' => 'single,double,tree']) !!}
                 </div>
                 @error('type')
                     <div class="invalid-feedback" id="type">
+                        {{ $message }}
+                    </div>    
+                @enderror
+                <div class="form-group has-feedback @error('price') is-invalid @enderror">
+                    {!! Form::label('price', 'Price', ['class' => 'form-control-label']) !!}
+                    {!! Form::number('price', Route::is('roomTypes.edit') ? $room_type->price ?? old('price') : '0', ['class' => 'form-control', 'id' => 'price', 'aria-describedby' => 'price', 'step' => 10, 'min' => 0, 'placeholder' => 'Gh¢ 0.00']) !!}
+                </div>
+                @error('price')
+                    <div class="invalid-feedback" id="price">
                         {{ $message }}
                     </div>    
                 @enderror
