@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -28,11 +27,15 @@ class UpdateTenantRequest extends FormRequest
         return [
             'first_name'    => 'required|string|max:250',
             'last_name'     => 'required|string|max:250',
-            'phone'         => 'required|regex:/^\((\+233)\)?(0[25][7463]\d{7,})$/', // TODO add the ability to add any valid number.
+            'phone'         => [
+                'required',
+                'regex:/^\(?(\+233)?\)?(0[235][7463]\d{7,})$/',
+                Rule::unique('tenants')->ignore($this->tenant)
+            ], // TODO add the ability to add any valid number.
             'email'         => [
                 'nullable',
                 'email',
-                Rule::unique('tenants')->ignore(Tenant::where('email', $this->email)->first()),
+                Rule::unique('tenants')->ignore($this->tenant),
             ],
             'picture'       => 'nullable|image|mimes:png,jpeg,jpg,webp',
             'occupation'    => 'required|string|in:worker,student',
