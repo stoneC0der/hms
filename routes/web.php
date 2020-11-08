@@ -29,9 +29,9 @@ Route::group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
         'tenants'   => 'TenantsManagementController',
         'bookings'  => 'BookingsManagementController',
     ]);
-});
 
-Auth::routes();
+    Route::post('/booking/available-rooms', ['App\Http\Controllers\Admin\BookingsManagementController','availableRooms'])->name('available-rooms');
+});
 
 Route::get('/home', function() {
     return view('home');
