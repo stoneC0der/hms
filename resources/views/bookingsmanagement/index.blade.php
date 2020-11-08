@@ -146,10 +146,12 @@
                         console.log(room_type.value * duration.value);
                         const method = 'post',
                             url = '/admin/booking/available-rooms',
-                            data = {room_price : event.target.value};
+                        if (room_type.value == 0) {
+                            return clearErrorMessages();
+                        }
                         ajax(method, url, data, true);
-                        if (duration == undefined) {
-                            total_amount.value = (undefined);
+                        if (duration.value == 0) {
+                            total_amount.value = 0;
                             return;
                         }
                         total_amount.value = room_type.value * duration.value;
