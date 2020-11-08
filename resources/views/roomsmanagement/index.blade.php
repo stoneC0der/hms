@@ -39,11 +39,9 @@
                                         <td>{{ $room->room_number }}</td>
                                         <td>{{ $room->type->type }}</td>
                                         <td>
-                                            @if ($room->is_available == 0)
+                                            @if ($room->is_available == 1)
                                                 <span class="badge badge-success d-block">Free</span>
-                                            @elseif ($room->is_available == 1)
-                                                <span class="badge @if ($room->room_type_id == 1 ) badge-danger @else badge-warning @endif d-block">@if ($room->room_type_id == 1 ) Full @else 1 Free @endif</span>
-                                            @else
+                                            @elseif ($room->is_available == 0)
                                                 <span class="badge badge-danger d-block">Full</span>
                                             @endif
                                         </td>
