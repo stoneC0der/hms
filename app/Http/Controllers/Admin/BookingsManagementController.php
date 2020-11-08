@@ -13,6 +13,7 @@ use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BookingsManagementController extends Controller
 {
@@ -166,16 +167,32 @@ class BookingsManagementController extends Controller
     public function availableRooms(Request $request)
     {
         if ($request->ajax()) {
-            $room_price =json_decode(file_get_contents('php://input'));
-            $room_type = RoomType::where('price', $room_price->room_price)->first()->id;
-            $available_rooms = Room::available($room_type)->pluck('room_number', 'id');
+            $roomInfos =json_decode(file_get_contents('php://input'));
+            
+            $validator = Validator::make((array)$roomInfos,[
+                'room_price' => 'required|exists:room_types,price',
+                'room_id'   => 'required|exists:rooms,id',
+            ],[
+                'room_type.require' => 'Room type no provided!',
+                'room_type.exists'  => 'Room type no found!',
+                'room_id.exists'    => 'The room is not available',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['data' => ['status' => '412', 'message' => 'Unprocessed data.', 'errors' => $validator->errors()]],Response::HTTP_OK, ['Status' => 412]);
+            }
+            
+            $room_type = RoomType::where('price', $roomInfos->room_price)->first()->id;
+            $room = Room::where('id', $roomInfos->room_id)->first()->id;
+            $available_rooms = Room::available($room_type, $room)->pluck('room_number', 'id');
             $data = [
                 'message' => 'Success!',
                 'rooms' => $available_rooms,
                 'status'    => Response::HTTP_OK,
+                'errors' => [],
             ];
             return response()->json(['data' => $data],Response::HTTP_OK);
         }
-        return response()->json(['data' => ['status' => '400', 'message' => 'Invalid request.', 'rooms' => []]],Response::HTTP_OK);
+        return response()->json(['data' => ['status' => '400', 'message' => 'Invalid request.']],Response::HTTP_OK, ['Status' => '400']);
     }
 }
