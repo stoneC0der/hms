@@ -116,10 +116,7 @@
                             status = xhr.status;
                             if (status >= 200 && status < 400) {
                                 let rooms = JSON.parse(xhr.responseText).data;
-                                const available_rooms = rooms.rooms;
-                                let html = '<option value="" selected>--Select room type--</span>';
-                                for (const room in available_rooms) {
-                                        html += `<option value="${room}">${available_rooms[room]}</span>`;
+                                displayAvailableRooms(rooms);
                                 }
                                 const select_rooms = document.getElementById('room_id');
                                 select_rooms.innerHTML = html;
@@ -167,6 +164,17 @@
                     });
                 }
 
+                function displayAvailableRooms(rooms) {
+                    clearErrorMessages();
+                    const available_rooms = rooms.rooms;
+                    let html = '<option value="" selected>--Select room type--</span>';
+                    for (const room in available_rooms) {
+                            html += `<option value="${room}">${available_rooms[room]}</span>`;
+                    }
+                    const select_rooms = document.getElementById('room_id');
+                    select_rooms.innerHTML = html;
+                    // console.log(rooms.message, html,rooms,rooms.rooms);
+                }
                 // function fetchAvailableRooms (method,url,data) {
                 //     const request_method = '',
                 //         reques_url = '',
