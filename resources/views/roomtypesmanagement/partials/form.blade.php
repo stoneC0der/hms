@@ -28,6 +28,10 @@
                 <div class="custom-control custom-checkbox has-feedback @error('has_internal_bathroom') is-invalid @enderror">
                     {!! Form::checkbox('has_internal_bathroom', '1', ($room_type->has_internal_bathroom ?? old('has_internal_bathroom')) ? 'checked' : null , ['class' => 'custom-control-input', 'id' => 'has_internal_bathroom', 'aria-describedby' => 'has_internal_bathroom']) !!}
                     {!! Form::label('has_internal_bathroom', 'Internal Bathroom', ['class' => 'custom-control-label']) !!}
+                    <p class="form-text text-muted small">
+                        {{-- TODO:  extra should be editable --}}
+                        Internal bathroom add Gh¢30 extra!
+                    </p>
                 </div>
                 @error('has_internal_bathroom')
                     <div class="invalid-feedback" id="has_internal_bathroom">
