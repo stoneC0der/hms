@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Booking;
+use App\Models\RoomType;
+use App\Models\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookingRequest extends FormRequest
@@ -25,31 +27,47 @@ class StoreBookingRequest extends FormRequest
     public function rules()
     {
         return [
-            'room_id'   => 'required|exists:rooms,id',
-            'tenant_id' => 'required|exists:tenants,id',
-            'duration'  => 'required|numeric',
-            'from'      => 'required|date',
-            'to'        => 'required|date',
-            'currency'  => 'required',
-            'amount'    => 'required|numeric',
-            'balance'   => 'nullable|numeric',
+            'first_name'    => 'required|string|max:250',
+            'last_name'     => 'required|string|max:250',
+            // TODO:   add the ability to add any valid number.
+            'phone'         => 'required|regex:/^\(?(\+233)?\)?(0[235][7463]\d{7,})$/|unique:tenants,phone', 
+            'email'         => 'nullable|email|unique:tenants,email',
+            'picture'       => 'nullable|file|image|mimes:png,jpeg,jpg,webp',
+            'occupation'    => 'required|string|in:worker,student',
+            'where'         => 'required|string',
+            'room_id'       => 'required|exists:rooms,id',
+            'room_type'     => 'required|exists:room_types,price',
+            'duration'      => 'required|numeric',
+            'from'          => 'required|date',
+            'to'            => 'required|date',
+            'amount'        => 'required|numeric',
+            // 'balance'       => 'nullable|numeric',
         ];
     }
 
     public function processData()
     {
-        $booking = new Booking();
-
-        $booking->room_id   = $this->room_id;
-        $booking->tenant_id = $this->tenant_id;
-        $booking->duration  = $this->duration;
-        $booking->from      = $this->from;
-        $booking->to        = $this->to;
-        $booking->currency  = $this->currency;
-        $booking->amount    = $this->amount;
-        $booking->balance   = $this->balance;
-
-        return $booking;
+        $roomType = RoomType::where('price', $this->room_type)->first();
+        $booking = [
+            'room_id'   => $this->room_id,
+            'tenant_id' => $this->tenant_id,
+            'duration'  => $this->duration,
+            'from'      => $this->from,
+            'to'        => $this->to,
+            'room_type_id'  => $roomType->id,
+            'amount'    => $this->amount,
+            // 'balance'   => $this->balance,
+        ];
+        $tenant = [
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'picture' => $this->picture,
+            'occupation' => $this->occupation,
+            'where' => $this->where,
+        ];
+        return ['tenant' => $tenant, 'booking' => $booking, 'room_type' => $roomType->type];
     }
     
 }
