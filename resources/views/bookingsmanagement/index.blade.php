@@ -117,12 +117,15 @@
                             if (status >= 200 && status < 400) {
                                 let rooms = JSON.parse(xhr.responseText).data;
                                 displayAvailableRooms(rooms);
-                                }
-                                const select_rooms = document.getElementById('room_id');
-                                select_rooms.innerHTML = html;
-                                console.log(rooms.message, html,rooms,rooms.rooms);
-                            }else {
-                                console.log('An error has occured!');
+                            }else if (status == 412) {
+                                const errors = JSON.parse(xhr.responseText).data.errors
+                                showErrorMessages(errors);
+                            }else if (status == 400) {
+                                const error_message = JSON.parse(xhr.responseText).data.message;
+                                window.alert(error_message)
+                                // console.log('An error has occured!', error_message);
+                            } else {
+                                window.alert('Server error!');
                             }
                         }
                     };
@@ -143,7 +146,7 @@
                     let total_amount = document.getElementById('amount');
 
                     room_type.addEventListener('change', (event) => {
-                        console.log(room_type.value * duration.value);
+                        // console.log(room_type.value * duration.value);
                         const method = 'post',
                             url = '/admin/booking/available-rooms',
                             data = {
@@ -161,7 +164,7 @@
                         total_amount.value = room_type.value * duration.value;
                     });
                     duration.addEventListener('focusout', (event) => {
-                        console.log(room_type.value * duration.value);
+                        // console.log(room_type.value * duration.value);
                         total_amount.value = room_type.value * duration.value;
                         if (duration == undefined) {
                             return;
@@ -181,6 +184,19 @@
                     select_rooms.innerHTML = html;
                     // console.log(rooms.message, html,rooms,rooms.rooms);
                 }
+
+                function showErrorMessages(errors) {
+                    for(const error in errors) {
+                        const error_output = document.getElementById(`${error}Error`);
+                        error_output.innerText = errors[error];
+                        // console.log('An error has occured!', `${error} : ${errors[error]}`);
+                    }
+                }
+                function clearErrorMessages() {
+                    const room_typeError = document.getElementById('room_typeError').innerText = '';
+                    const room_idError = document.getElementById('room_idError').innerText = '';
+                }
+
                 // function fetchAvailableRooms (method,url,data) {
                 //     const request_method = '',
                 //         reques_url = '',

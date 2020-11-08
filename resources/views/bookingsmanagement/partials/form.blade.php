@@ -35,18 +35,20 @@
             {{-- TODO:  fetch rooms based on room type --}}
             <div class="form-group has-feedback @error('room_type') is-invalid @enderror">
                 {!! Form::label('room_type', 'Type of room', ['class' => 'form-control-label']) !!}
-                {!! Form::select('room_type', $roomTypes ?? null, $booked->room_type->price ?? old('room_type'), ['class' => 'custom-select', 'id' => 'room_type', 'data-bookedRoomId' => $booked->room_id ?? '', 'aria-describedby' => 'room_typeError', 'placeholder' => 'Select type of room...']) !!}
+                {!! Form::select('room_type', $roomTypes ?? null, $booked->room_type->price ?? old('room_type'), ['class' => 'custom-select', 'id' => 'room_type', 'data-bookedRoomId' => $booked->room_id ?? '', 'aria-describedby' => 'room_type', 'placeholder' => 'Select type of room...']) !!}
             </div>
+            <div class="text-danger small" id="room_typeError"></div>
             @error('room_type')
                 <div class="invalid-feedback" id="room_type">
                     {{ $message }}
                 </div>    
             @enderror
-            
+
             <div class="form-group has-feedback @error('room_id') is-invalid @enderror">
                 {!! Form::label('room_id', 'Room number', ['class' => 'form-control-label']) !!}
                 {!! Form::select('room_id', $rooms ?? null, $booked->room_id ?? old('room_id'), ['class' => 'custom-select', 'id' => 'room_id', 'aria-describedby' => 'room_id', 'placeholder' => 'Select type of room...']) !!}
             </div>
+            <div class="text-danger small" id="room_idError"></div>
             @error('room_id')
                 <div class="invalid-feedback" id="room_id">
                     {{ $message }}
