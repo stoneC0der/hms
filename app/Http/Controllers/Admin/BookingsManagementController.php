@@ -164,6 +164,13 @@ class BookingsManagementController extends Controller
         return redirect()->route('bookings.index');
     }
 
+    /**
+     * Get All available rooms of a given type (of room)
+     * 
+     * @param \Illuminate\Http\Request $request
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function availableRooms(Request $request)
     {
         if ($request->ajax()) {
@@ -181,7 +188,7 @@ class BookingsManagementController extends Controller
             if ($validator->fails()) {
                 return response()->json(['data' => ['status' => '412', 'message' => 'Unprocessed data.', 'errors' => $validator->errors()]],Response::HTTP_OK, ['Status' => 412]);
             }
-            
+
             $room_type = RoomType::where('price', $roomInfos->room_price)->first()->id;
             $room = Room::where('id', $roomInfos->room_id)->first()->id;
             $available_rooms = Room::available($room_type, $room)->pluck('room_number', 'id');
