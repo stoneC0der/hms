@@ -12,6 +12,7 @@ use App\Models\RoomType;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class BookingsManagementController extends Controller
 {
@@ -55,8 +56,48 @@ class BookingsManagementController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        $updatedBooking = $request->processData();
-        $updatedBooking->save();
+        DB::transaction(function () use ($request) {
+            $newBookingInfos = $request->processData();
+            // dd($newBookingInfos);
+            $newTenant = $newBookingInfos['tenant'];
+            $newBooking = $newBookingInfos['booking'];
+
+            $alreadyBooked = Booking::where('room_id', $newBooking['room_id'])->get();
+            // dd($alreadyBooked);
+            // if ($alreadyBooked) {
+            //     // dd($newBookingInfos['room_type'] == 'double');
+            //     if ($alreadyBooked->first()->room_type->type == 'single') {
+            //         return back()->with('error', 'room full!');
+            //     }elseif ($alreadyBooked->first()->room_type->type == 'double' && $alreadyBooked->count() == 2) {
+            //         return back()->with('error', 'room full!');
+            //     }
+            // }
+            if($newBookingInfos['room_type'] == 'single') {
+                $tenant = Tenant::create($newTenant);
+                $newBooking['tenant_id'] = $tenant->id;
+                $booking = Booking::create($newBooking);
+                $room = Room::where('id', $booking->room_id)->first();
+                $room->is_available = boolval(false);
+                $room->save();
+            }elseif($newBookingInfos['room_type'] == 'double') {
+
+                // dd($newBookingInfos['room_type'] == 'double');
+                if ($alreadyBooked->count() == 0) {
+                    // dd($newBookingInfos['room_type'] == 'double', 'has no room');
+                    $tenant = Tenant::create($newTenant);
+                    $newBooking['tenant_id'] = $tenant->id;
+                    $booking = Booking::create($newBooking);
+                }else {
+                    // dd($newBookingInfos['room_type'] == 'double', 'has a least 1 room');
+                    $tenant = Tenant::create($newTenant);
+                    $newBooking['tenant_id'] = $tenant->id;
+                    $booking = Booking::create($newBooking);
+                    $room = Room::where('id', $booking->room_id)->first();
+                    $room->is_available = boolval(false);
+                    $room->save();
+                }
+            }
+        });
 
         return redirect()->route('bookings.index');
     }
