@@ -177,6 +177,7 @@ class BookingsManagementController extends Controller
      */
     public function availableRooms(Request $request)
     {
+        // FIXME:  The current user room should not return if type of room has change while editing.
         if ($request->ajax()) {
             $roomInfos =json_decode(file_get_contents('php://input'));
             
