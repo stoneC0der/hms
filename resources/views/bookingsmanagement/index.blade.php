@@ -146,6 +146,10 @@
                         console.log(room_type.value * duration.value);
                         const method = 'post',
                             url = '/admin/booking/available-rooms',
+                            data = {
+                                room_price : event.target.value,
+                                room_id : room_type.dataset.bookedroomid
+                            };
                         if (room_type.value == 0) {
                             return clearErrorMessages();
                         }
