@@ -35,7 +35,7 @@
             {{-- TODO:  fetch rooms based on room type --}}
             <div class="form-group has-feedback @error('room_type') is-invalid @enderror">
                 {!! Form::label('room_type', 'Type of room', ['class' => 'form-control-label']) !!}
-                {!! Form::select('room_type', $roomTypes ?? null, $booked->room_type_id ?? old('room_type'), ['class' => 'custom-select', 'id' => 'room_type', 'data-price' => $loop, 'aria-describedby' => 'room_type', 'placeholder' => 'Select type of room...']) !!}
+                {!! Form::select('room_type', $roomTypes ?? null, $booked->room_type->price ?? old('room_type'), ['class' => 'custom-select', 'id' => 'room_type', 'aria-describedby' => 'room_type', 'placeholder' => 'Select type of room...']) !!}
             </div>
             @error('room_type')
                 <div class="invalid-feedback" id="room_type">
