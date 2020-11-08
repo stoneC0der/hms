@@ -159,8 +159,12 @@ class BookingsManagementController extends Controller
      */
     public function destroy(DeleteBookingRequest $request, Booking $booking)
     {
-        $booking->delete();
-
+        DB::transaction(function () use ($booking) {
+            $room = $booking->room;
+            $booking->delete();
+            $room->is_available = boolval(true);
+            $room->save();
+        });
         return redirect()->route('bookings.index');
     }
 
