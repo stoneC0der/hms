@@ -34,11 +34,15 @@ class UpdateRoomTypeRequest extends FormRequest
     {
         $room_type->type = $this->type;
         $room_type->price = $this->price;
-        $room_type->has_internal_bathroom = boolval($this->has_internal_bathroom);
         
-        if (boolval($this->has_internal_bathroom)) {
+        if (boolval($this->has_internal_bathroom) && false == boolval($room_type->has_internal_bathroom)) {
             $room_type->price += 30;
         }
+        if (null == boolval($this->has_internal_bathroom) && boolval($room_type->has_internal_bathroom)) {
+            $room_type->price -= 30;
+        }
+        $room_type->has_internal_bathroom = boolval($this->has_internal_bathroom);
+
         return $room_type;
     }
 }
