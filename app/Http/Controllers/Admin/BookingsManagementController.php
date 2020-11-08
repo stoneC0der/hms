@@ -7,6 +7,11 @@ use App\Http\Requests\DeleteBookingRequest;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
+use App\Models\Room;
+use App\Models\RoomType;
+use App\Models\Tenant;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BookingsManagementController extends Controller
 {
@@ -18,8 +23,12 @@ class BookingsManagementController extends Controller
     public function index()
     {
         $bookings = Booking::paginate(25);
+        $layout = 'full';
+        $rooms  = Room::pluck('room_number', 'id');
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
+        $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('bookingsmanagement.index', compact('bookings'));
+        return view('bookingsmanagement.index', compact('bookings', 'layout', 'rooms', 'occupations', 'roomTypes'));
     }
 
     /**
@@ -31,8 +40,11 @@ class BookingsManagementController extends Controller
     {
         $bookings = Booking::paginate(25);
         $layout = 'split';
+        $rooms  = Room::available()->pluck('room_number', 'id');
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
+        $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('bookingsmanagement.index', compact('layout', 'bookings'));
+        return view('bookingsmanagement.index', compact('layout', 'bookings', 'rooms', 'occupations', 'roomTypes'));
     }
 
     /**
@@ -59,8 +71,9 @@ class BookingsManagementController extends Controller
     {
         $bookings = Booking::paginate(25);
         $layout = 'split';
-
-        return view('bookingsmanagement.index', compact('layout', 'booking', 'bookings'));
+        $rooms  = Room::pluck('room_number', 'id');
+        $roomTypes = RoomType::pluck('type', 'price');
+        return view('bookingsmanagement.index', compact('layout', 'bookings', 'rooms', 'roomTypes'));
     }
 
     /**
@@ -73,8 +86,12 @@ class BookingsManagementController extends Controller
     {
         $bookings = Booking::paginate(25);
         $layout = 'split';
+        $rooms  = Room::available($booking->room_id)->pluck('room_number', 'id');
+        $booked = $booking;
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
+        $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('bookingsmanagement.index', compact('layout', 'booking', 'bookings'));
+        return view('bookingsmanagement.index', compact('layout', 'bookings', 'rooms', 'booked', 'occupations', 'roomTypes'));
     }
 
     /**
