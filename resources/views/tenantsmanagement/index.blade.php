@@ -27,6 +27,7 @@
                                 <th>First name</th>
                                 <th>Last name</th>
                                 <th>Phone</th>
+                                <th>E-mail</th>
                                 <th>Occupation</th>
                                 <th>Updated on</th>
                                 <th colspan="3">Actions</th>
@@ -39,7 +40,8 @@
                                         <td scope="row">{{ $tenant->id }}</td>
                                         <td>{{ $tenant->first_name }}</td>
                                         <td>{{ $tenant->last_name }}</td>
-                                        <td><a href="tel:+(233){{ $tenant->phone }}"></a></td>
+                                        <td><a href="tel:+(233){{ $tenant->phone }}">{{ $tenant->phone }}</a></td>
+                                        <td><a href="mailto:{{ $tenant->email ?? '' }}">{{ $tenant->email ?? 'N/A' }}</a></td>
                                         <td>{{ $tenant->occupation }}</td>
                                         <td>{{ $tenant->created_at->diffForHumans(null,false,true) }}</td>
                                         <td>
