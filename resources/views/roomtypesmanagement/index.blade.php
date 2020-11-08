@@ -25,6 +25,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Type</th>
+                                <th>Price</th>
                                 <th>Internal Bathroom</th>
                                 <th>Added on</th>
                                 <th colspan="2">Actions</th>
@@ -36,6 +37,7 @@
                                     <tr>
                                         <td scope="row">{{ $roomType->id }}</td>
                                         <td>{{ $roomType->type }}</td>
+                                        <td>{{ 'Gh¢' .$roomType->price }}</td>
                                         <td>{{ ($roomType->has_internal_bathroom) ? 'YES' : 'FALSE' }}</td>
                                         <td>{{ $roomType->created_at->diffForHumans(null,false,true) }}</td>
                                         <td>
