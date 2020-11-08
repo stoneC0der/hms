@@ -104,4 +104,20 @@ class BookingsManagementController extends Controller
 
         return redirect()->route('bookings.index');
     }
+
+    public function availableRooms(Request $request)
+    {
+        if ($request->ajax()) {
+            $room_price =json_decode(file_get_contents('php://input'));
+            $room_type = RoomType::where('price', $room_price->room_price)->first()->id;
+            $available_rooms = Room::available($room_type)->pluck('room_number', 'id');
+            $data = [
+                'message' => 'Success!',
+                'rooms' => $available_rooms,
+                'status'    => Response::HTTP_OK,
+            ];
+            return response()->json(['data' => $data],Response::HTTP_OK);
+        }
+        return response()->json(['data' => ['status' => '400', 'message' => 'Invalid request.', 'rooms' => []]],Response::HTTP_OK);
+    }
 }
