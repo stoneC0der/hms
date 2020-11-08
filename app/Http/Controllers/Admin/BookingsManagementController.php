@@ -41,7 +41,7 @@ class BookingsManagementController extends Controller
     {
         $bookings = Booking::paginate(25);
         $layout = 'split';
-        $rooms  = Room::available()->pluck('room_number', 'id');
+        $rooms  = Room::allAvailable()->pluck('room_number', 'id');
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
         $roomTypes = RoomType::pluck('type', 'price');
 
