@@ -15,7 +15,7 @@
                 <div class="card-header bg-dark">
                     <div class="d-flex justify-content-between align-items-center flex-wrap">
                         <div></div>
-                        <a href="{{ route('tenants.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Type</a>
+                        <a href="{{ route('tenants.create') }}" class="btn btn-primary btn-sm disabled"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Type</a>
                     </div>
                 </div>
                 <div class="card-body p-0 table-responsive">
