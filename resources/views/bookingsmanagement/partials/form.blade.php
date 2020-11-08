@@ -42,29 +42,16 @@
                     {{ $message }}
                 </div>    
             @enderror
+            
             <div class="form-group has-feedback @error('room_id') is-invalid @enderror">
-                <label for="room_id" class="form-control-label">Room number</label>
-
-                <select id="room_id" name="room_id" class="custom-select" aria-describedby="room_id" aria-placeholder="Select room type">
-                    <option value="">--Select room type--</option>
-                </select>
+                {!! Form::label('room_id', 'Room number', ['class' => 'form-control-label']) !!}
+                {!! Form::select('room_id', $rooms ?? null, $booked->room_id ?? old('room_id'), ['class' => 'custom-select', 'id' => 'room_id', 'aria-describedby' => 'room_id', 'placeholder' => 'Select type of room...']) !!}
             </div>
             @error('room_id')
                 <div class="invalid-feedback" id="room_id">
                     {{ $message }}
                 </div>    
             @enderror
-            <noscript>
-                <div class="form-group has-feedback @error('room_id') is-invalid @enderror">
-                    {!! Form::label('room_id', 'Room number', ['class' => 'form-control-label']) !!}
-                    {!! Form::select('room_id', $rooms ?? null, $booked->room_id ?? old('room_id'), ['class' => 'custom-select', 'id' => 'room_id', 'aria-describedby' => 'room_id', 'placeholder' => 'Select type of room...']) !!}
-                </div>
-                @error('room_id')
-                    <div class="invalid-feedback" id="room_id">
-                        {{ $message }}
-                    </div>    
-                @enderror
-            </noscript>
 
             <div class="form-group has-feedback @error('duration') is-invalid @enderror">
                 {!! Form::label('duration', 'duration', ['class' => 'form-control-label']) !!}
