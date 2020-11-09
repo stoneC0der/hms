@@ -75,7 +75,7 @@ class BookingsManagementController extends Controller
             // }
             if($newBookingInfos['room_type'] == 'single') {
                 $tenant = Tenant::create($newTenant);
-                $newBooking['tenant_id'] = $tenant->id;
+                $newBooking['tenant_id'] = $tenant->id; // TODO:  Auto attach tenant_id by defining a belongs to relation in \App\Models\Booking
                 $booking = Booking::create($newBooking);
                 $room = Room::where('id', $booking->room_id)->first();
                 $room->is_available = boolval(false);
