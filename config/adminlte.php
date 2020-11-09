@@ -248,7 +248,7 @@ return [
         //     'label'       => 4,
         //     'label_color' => 'success',
         // ],
-        ['header' => 'Manage Bookings'],
+        ['header' => 'Manage Rents'],
         [
             'text'        => 'Type of Room',
             'url'         => 'admin/roomTypes',
@@ -271,8 +271,8 @@ return [
             // 'label_color' => 'success',
         ],
         [
-            'text'        => 'Bookings',
-            'url'         => 'admin/bookings',
+            'text'        => 'Rents',
+            'url'         => 'admin/rents',
             'icon'        => 'fas fa-fw fa-book',
             // 'label'       => 4,
             // 'label_color' => 'success',

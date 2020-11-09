@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Booking;
+use App\Models\Rent;
 use App\Models\Room;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 
-class UpdateBookingRequest extends FormRequest
+class UpdateRentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,29 +36,29 @@ class UpdateBookingRequest extends FormRequest
         ];
     }
 
-    public function processData($booking): object
+    public function processData($rent): object
     {
         // Handle room availability
         $new_room = Room::find($this->room_id);
-        $old_room = $booking->room;
+        $old_room = $rent->room;
         if ($new_room != $old_room) {
             $this->setRoomAvailability($new_room, $old_room);
         }
         
         // TODO:  add image upload.
-        $booking->room_id   = $this->room_id;
-        // $booking->tenant_id = $booking->tenant->id; // This might not be necessary
-        $booking->room_type_id  = $new_room->type->id;
-        $booking->from      = $this->from;
-        $booking->to    = $this->to;
-        $booking->amount    = $this->amount;
+        $rent->room_id   = $this->room_id;
+        // $rent->tenant_id = $rent->tenant->id; // This might not be necessary
+        $rent->room_type_id  = $new_room->type->id;
+        $rent->from      = $this->from;
+        $rent->to    = $this->to;
+        $rent->amount    = $this->amount;
         // Set duration
         $from = Carbon::create($this->from);
         $to = Carbon::create($this->to);
-        $booking->duration  = $from->diffInMonths($to);
-        // $booking->balance   = $this->balance;
+        $rent->duration  = $from->diffInMonths($to);
+        // $rent->balance   = $this->balance;
 
-        return $booking;
+        return $rent;
     }
 
     /**
@@ -74,7 +74,7 @@ class UpdateBookingRequest extends FormRequest
             $old_room->is_available = boolVal(true);
         } else {
             $old_room->is_available = boolVal(true);
-            $new_room_exists = Booking::where('room_id', $new_room->id)->count();
+            $new_room_exists = Rent::where('room_id', $new_room->id)->count();
             if ($new_room_exists >= 1) {
                 $new_room->is_available = boolVal(false);
             }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DeleteBookingRequest;
-use App\Http\Requests\StoreBookingRequest;
-use App\Http\Requests\UpdateBookingRequest;
-use App\Models\Booking;
+use App\Http\Requests\DeleteRentRequest;
+use App\Http\Requests\StoreRentRequest;
+use App\Http\Requests\UpdateRentRequest;
+use App\Models\Rent;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Tenant;
@@ -15,7 +15,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class BookingsManagementController extends Controller
+class RentsManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,13 +24,13 @@ class BookingsManagementController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::paginate(25);
+        $rents = Rent::paginate(25);
         $layout = 'full';
         $rooms  = Room::pluck('room_number', 'id');
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
         $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('bookingsmanagement.index', compact('bookings', 'layout', 'rooms', 'occupations', 'roomTypes'));
+        return view('rentsmanagement.index', compact('rents', 'layout', 'rooms', 'occupations', 'roomTypes'));
     }
 
     /**
@@ -40,13 +40,13 @@ class BookingsManagementController extends Controller
      */
     public function create()
     {
-        $bookings = Booking::paginate(25);
+        $rents = Rent::paginate(25);
         $layout = 'split';
         $rooms  = Room::allAvailable()->pluck('room_number', 'id');
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
         $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('bookingsmanagement.index', compact('layout', 'bookings', 'rooms', 'occupations', 'roomTypes'));
+        return view('rentsmanagement.index', compact('layout', 'rents', 'rooms', 'occupations', 'roomTypes'));
     }
 
     /**
@@ -55,117 +55,117 @@ class BookingsManagementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBookingRequest $request)
+    public function store(StoreRentRequest $request)
     {
         DB::transaction(function () use ($request) {
-            $newBookingInfos = $request->processData();
-            // dd($newBookingInfos);
-            $newTenant = $newBookingInfos['tenant'];
-            $newBooking = $newBookingInfos['booking'];
+            $newRentInfos = $request->processData();
+            // dd($newRentInfos);
+            $newTenant = $newRentInfos['tenant'];
+            $newRent = $newRentInfos['rent'];
 
-            $alreadyBooked = Booking::where('room_id', $newBooking['room_id'])->get();
+            $alreadyBooked = Rent::where('room_id', $newRent['room_id'])->get();
             // dd($alreadyBooked);
             // if ($alreadyBooked) {
-            //     // dd($newBookingInfos['room_type'] == 'double');
+            //     // dd($newRentInfos['room_type'] == 'double');
             //     if ($alreadyBooked->first()->room_type->type == 'single') {
             //         return back()->with('error', 'room full!');
             //     }elseif ($alreadyBooked->first()->room_type->type == 'double' && $alreadyBooked->count() == 2) {
             //         return back()->with('error', 'room full!');
             //     }
             // }
-            if($newBookingInfos['room_type'] == 'single') {
+            if($newRentInfos['room_type'] == 'single') {
                 $tenant = Tenant::create($newTenant);
-                $newBooking['tenant_id'] = $tenant->id; // TODO:  Auto attach tenant_id by defining a belongs to relation in \App\Models\Booking
-                $booking = Booking::create($newBooking);
-                $room = Room::where('id', $booking->room_id)->first();
+                $newRent['tenant_id'] = $tenant->id; // TODO:  Auto attach tenant_id by defining a belongs to relation in \App\Models\Rent
+                $rent = Rent::create($newRent);
+                $room = Room::where('id', $rent->room_id)->first();
                 $room->is_available = boolval(false);
                 $room->save();
-            }elseif($newBookingInfos['room_type'] == 'double') {
+            }elseif($newRentInfos['room_type'] == 'double') {
 
-                // dd($newBookingInfos['room_type'] == 'double');
+                // dd($newRentInfos['room_type'] == 'double');
                 if ($alreadyBooked->count() == 0) {
-                    // dd($newBookingInfos['room_type'] == 'double', 'has no room');
+                    // dd($newRentInfos['room_type'] == 'double', 'has no room');
                     $tenant = Tenant::create($newTenant);
-                    $newBooking['tenant_id'] = $tenant->id;
-                    $booking = Booking::create($newBooking);
+                    $newRent['tenant_id'] = $tenant->id;
+                    $rent = Rent::create($newRent);
                 }else {
-                    // dd($newBookingInfos['room_type'] == 'double', 'has a least 1 room');
+                    // dd($newRentInfos['room_type'] == 'double', 'has a least 1 room');
                     $tenant = Tenant::create($newTenant);
-                    $newBooking['tenant_id'] = $tenant->id;
-                    $booking = Booking::create($newBooking);
-                    $room = Room::where('id', $booking->room_id)->first();
+                    $newRent['tenant_id'] = $tenant->id;
+                    $rent = Rent::create($newRent);
+                    $room = Room::where('id', $rent->room_id)->first();
                     $room->is_available = boolval(false);
                     $room->save();
                 }
             }
         });
 
-        return redirect()->route('bookings.index');
+        return redirect()->route('rents.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Booking  $booking
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function show(Booking $booking)
+    public function show(Rent $rent)
     {
-        $bookings = Booking::paginate(25);
+        $rents = Rent::paginate(25);
         $layout = 'split';
         $rooms  = Room::pluck('room_number', 'id');
         $roomTypes = RoomType::pluck('type', 'price');
-        return view('bookingsmanagement.index', compact('layout', 'bookings', 'rooms', 'roomTypes'));
+        return view('rentsmanagement.index', compact('layout', 'rents', 'rooms', 'roomTypes'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Booking  $booking
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function edit(Booking $booking)
+    public function edit(Rent $rent)
     {
-        $bookings = Booking::paginate(25);
+        $rents = Rent::paginate(25);
         $layout = 'split';
-        $rooms  = Room::available($booking->room_type_id, $booking->room_id)->pluck('room_number', 'id');
-        $booked = $booking;
+        $rooms  = Room::available($rent->room_type_id, $rent->room_id)->pluck('room_number', 'id');
+        $booked = $rent;
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
         $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('bookingsmanagement.index', compact('layout', 'bookings', 'rooms', 'booked', 'occupations', 'roomTypes'));
+        return view('rentsmanagement.index', compact('layout', 'rents', 'rooms', 'booked', 'occupations', 'roomTypes'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Booking  $booking
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBookingRequest $request, Booking $booking)
+    public function update(UpdateRentRequest $request, Rent $rent)
     {
-        $updatedBooking = $request->processData($booking);
-        $updatedBooking->save();
+        $updatedRent = $request->processData($rent);
+        $updatedRent->save();
 
-        return redirect()->route('bookings.index');
+        return redirect()->route('rents.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Booking  $booking
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DeleteBookingRequest $request, Booking $booking)
+    public function destroy(DeleteRentRequest $request, Rent $rent)
     {
-        DB::transaction(function () use ($booking) {
-            $room = $booking->room;
-            $booking->delete();
+        DB::transaction(function () use ($rent) {
+            $room = $rent->room;
+            $rent->delete();
             $room->is_available = boolval(true);
             $room->save();
         });
-        return redirect()->route('bookings.index');
+        return redirect()->route('rents.index');
     }
 
     /**

@@ -27,10 +27,10 @@ Route::group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
         'roomTypes' => 'RoomTypesManagementController',
         'rooms'     => 'RoomsManagementController',
         'tenants'   => 'TenantsManagementController',
-        'bookings'  => 'BookingsManagementController',
+        'rents'  => 'RentsManagementController',
     ]);
 
-    Route::post('/booking/available-rooms', ['App\Http\Controllers\Admin\BookingsManagementController','availableRooms'])->name('available-rooms');
+    Route::post('/rent/available-rooms', ['App\Http\Controllers\Admin\RentsManagementController','availableRooms'])->name('available-rooms');
 });
 
 Route::get('/home', function() {

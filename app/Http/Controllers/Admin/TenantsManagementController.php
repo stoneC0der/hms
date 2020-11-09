@@ -31,8 +31,8 @@ class TenantsManagementController extends Controller
      */
     public function create()
     {
-        // Temporary disable creation of tenants, can still be done in booking.
-        return back()->with('info', 'Creating user is done through booking');
+        // Temporary disable creation of tenants, can still be done in rent.
+        return back()->with('info', 'Creating user is done through rent');
         $tenants = Tenant::paginate(25);
         $layout = 'split';
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
@@ -48,8 +48,8 @@ class TenantsManagementController extends Controller
      */
     public function store(StoreTenantRequest $request)
     {
-        // Temporary disable creation of tenants, can still be done in booking.
-        return back()->with('info', 'Creating user is done through booking');
+        // Temporary disable creation of tenants, can still be done in rent.
+        return back()->with('info', 'Creating user is done through rent');
         $newTenant = $request->processData();
         $newTenant->save();
 

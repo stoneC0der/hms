@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             RoomTypesSeeder::class,
             RoomsSeeder::class,
             TenantsSeeder::class,
-            BookingsSeeder::class,
+            RentsSeeder::class,
         ]);
     }
 }

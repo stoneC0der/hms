@@ -2,20 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\Booking;
+use App\Models\Rent;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BookingFactory extends Factory
+class RentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Booking::class;
+    protected $model = Rent::class;
 
     /**
      * Define the model's default state.
@@ -45,7 +45,7 @@ class BookingFactory extends Factory
                 $room->is_available = boolval(true);
                 return $room->id;
             }else {
-                if (Booking::find($room->id)) {
+                if (Rent::find($room->id)) {
                     $room->is_available = boolval(true);
                     return $room->id;
                 }

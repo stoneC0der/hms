@@ -1,20 +1,20 @@
 <div class="card">
     <div class="card-header">
-        {!! Route::is('bookings.edit') ? 'Editing book of: <span class="text-muted">' . $booked->tenant->full_name ?? '' . '</span>' : 'Create new booking' !!}
+        {!! Route::is('rents.edit') ? 'Editing book of: <span class="text-muted">' . $booked->tenant->full_name ?? '' . '</span>' : 'Create new rent' !!}
     </div>
     <div class="card-body">
         {!! Form::open(
-            array('route' => (Route::is('bookings.edit')) ? ['bookings.update', 'booking' => $booked->id ?? null] : 'bookings.store', 'method' => (Route::is('bookings.edit')) ? 'PUT' : null)
+            array('route' => (Route::is('rents.edit')) ? ['rents.update', 'rent' => $booked->id ?? null] : 'rents.store', 'method' => (Route::is('rents.edit')) ? 'PUT' : null)
             ) !!}
 
-            {{-- Add when creating booking, this give the ability to directly create a tenant with a booking instead of first creating a tenant and then select him when creating a booking --}}
-            @includeWhen(Route::is('bookings.create'), 'bookingsmanagement.partials.tenant-details-input')
+            {{-- Add when creating rent, this give the ability to directly create a tenant with a rent instead of first creating a tenant and then select him when creating a rent --}}
+            @includeWhen(Route::is('rents.create'), 'rentsmanagement.partials.tenant-details-input')
 
-            {{-- Booking Part --}}
-            @if(Route::is('bookings.edit'))
+            {{-- Rent Part --}}
+            @if(Route::is('rents.edit'))
                 <div class="form-group has-feedback @error('tenant') is-invalid @enderror">
                     {!! Form::label('tenant', 'tenant', ['class' => 'form-control-label']) !!}
-                    {!! Form::text('tenant', Route::is('bookings.edit') ? $booked->tenant->full_name ?? old('tenant') : '', ['class' => 'form-control', 'id' => 'tenant', 'aria-describedby' => 'tenant', 'placeholder' => 'Number of months...', 'disabled' => true]) !!}
+                    {!! Form::text('tenant', Route::is('rents.edit') ? $booked->tenant->full_name ?? old('tenant') : '', ['class' => 'form-control', 'id' => 'tenant', 'aria-describedby' => 'tenant', 'placeholder' => 'Number of months...', 'disabled' => true]) !!}
                 </div>
                 @error('tenant')
                     <div class="invalid-feedback" id="tenant">
@@ -47,7 +47,7 @@
 
             <div class="form-group has-feedback @error('from') is-invalid @enderror">
                 {!! Form::label('from', 'from', ['class' => 'form-control-label']) !!}
-                {!! Form::date('from', Route::is('bookings.edit') ? $booked->from ?? old('from') : Carbon\Carbon::now(), ['class' => 'form-control', 'id' => 'from', 'aria-describedby' => 'from', 'placeholder' => '2020-12-09...']) !!}
+                {!! Form::date('from', Route::is('rents.edit') ? $booked->from ?? old('from') : Carbon\Carbon::now(), ['class' => 'form-control', 'id' => 'from', 'aria-describedby' => 'from', 'placeholder' => '2020-12-09...']) !!}
             </div>
             @error('from')
                 <div class="invalid-feedback" id="from">
@@ -57,7 +57,7 @@
 
             <div class="form-group has-feedback @error('to') is-invalid @enderror">
                 {!! Form::label('to', 'to', ['class' => 'form-control-label']) !!}
-                {!! Form::date('to', Route::is('bookings.edit') ? $booked->to ?? old('to') : '', ['class' => 'form-control', 'id' => 'to', 'aria-describedby' => 'to', 'placeholder' => '2020-12-25...']) !!}
+                {!! Form::date('to', Route::is('rents.edit') ? $booked->to ?? old('to') : '', ['class' => 'form-control', 'id' => 'to', 'aria-describedby' => 'to', 'placeholder' => '2020-12-25...']) !!}
             </div>
             @error('to')
                 <div class="invalid-feedback" id="to">
@@ -74,7 +74,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text" id="btnGroupAddon">Gh¢</div>
                         </div>
-                        {!! Form::text('amount', Route::is('bookings.edit') ? $booked->amount ?? old('amount') : '', ['class' => 'form-control', 'id' => 'amount', 'aria-describedby' => 'amount', 'placeholder' => 'Amount to pay']) !!}
+                        {!! Form::text('amount', Route::is('rents.edit') ? $booked->amount ?? old('amount') : '', ['class' => 'form-control', 'id' => 'amount', 'aria-describedby' => 'amount', 'placeholder' => 'Amount to pay']) !!}
                     </div>
                     @error('amount')
                         <div class="invalid-feedback" id="amount">
@@ -85,7 +85,7 @@
                 {{-- <div class="col-lg-4">
                     <div class="form-group has-feedback @error('balance') is-invalid @enderror">
                         {!! Form::label('balance', 'Balance', ['class' => 'form-control-label']) !!}
-                        {!! Form::text('balance', Route::is('bookings.edit') ? $booked->balance ?? old('balance') : '', ['class' => 'form-control', 'id' => 'balance', 'aria-describedby' => 'balance', 'placeholder' => 'The school/company name...']) !!}
+                        {!! Form::text('balance', Route::is('rents.edit') ? $booked->balance ?? old('balance') : '', ['class' => 'form-control', 'id' => 'balance', 'aria-describedby' => 'balance', 'placeholder' => 'The school/company name...']) !!}
                     </div>
                     @error('balance')
                         <div class="invalid-feedback" id="balance">
@@ -97,7 +97,7 @@
 
             {{-- Button Group --}}
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <a href="{{ route('bookings.index') }}" type="reset" class="btn btn-dark">Cancel</a>
+                <a href="{{ route('rents.index') }}" type="reset" class="btn btn-dark">Cancel</a>
                 <button type="submit" class="btn btn-success">Add</button>
             </div>
         {!! Form::close() !!}

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Booking;
+use App\Models\Rent;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
-class BookingsSeeder extends Seeder
+class RentsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class BookingsSeeder extends Seeder
      */
     public function run()
     {
-        $bookings = Booking::factory()->count(15)->state(new Sequence(
+        $rents = Rent::factory()->count(15)->state(new Sequence(
             ['duration' => 1],
             ['duration' => 2],
             ['duration' => 3],

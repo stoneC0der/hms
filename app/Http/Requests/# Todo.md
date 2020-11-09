@@ -1,6 +1,6 @@
 # Todo
 
-Step to resolve updating room availability when updating booking, creating seams to work
+Step to resolve updating room availability when updating rent, creating seams to work
 
 ## Sudo code
 
@@ -12,18 +12,18 @@ Step to resolve updating room availability when updating booking, creating seams
     - mark old room has available (persist)
   - if new_room is double
     - mark old_room as available (persist)
-    - if new_room exists in booking
+    - if new_room exists in rent
       - mark it has unavailable
 
 ## Implementation
 
 ```php
 ...
-$updated_book_details = []; // Incoming booking info
-// The room type info extracted using incoming booking room price
-$booking = $booking; // The current booking model;
+$updated_book_details = []; // Incoming rent info
+// The room type info extracted using incoming rent room price
+$rent = $rent; // The current rent model;
 $new_room = Room::find($updated_book_details['room_id']);
-$old_room = $booking->room;
+$old_room = $rent->room;
 
 if ($new_room != $old_room) {
     setRoomAvailability($new_room, $old_room);
@@ -42,7 +42,7 @@ public function setRoomAvailability($new_room, $old_room):void
         $old_room->is_available = boolVal(true);
     } else {
         $old_room->is_available = boolVal(true);
-        $new_room_exists = Booking::where('room_id', $new_room->id)->count();
+        $new_room_exists = Rent::where('room_id', $new_room->id)->count();
         if ($new_room_exists >= 1) {
             $new_room->is_available = boolVal(false);
         }

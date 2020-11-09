@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
 @section('title_prefix')
-    Viewing: Bookings |
+    Viewing: Rents |
 @endsection
 
 @section('content_header')
-    Viewing all Bookings
+    Viewing all Rents
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
                 <div class="card-header bg-dark">
                     <div class="d-flex justify-content-between align-items-center flex-wrap">
                         <div></div>
-                        <a href="{{ route('bookings.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add to Booking</a>
+                        <a href="{{ route('rents.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add to Rent</a>
                     </div>
                 </div>
                 <div class="card-body p-0 table-responsive">
@@ -37,38 +37,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @isset($bookings)
-                                @forelse ($bookings as $booking)
-                                    <tr class="@if ($booking->expires_in == 0) bg-danger @elseif ($booking->expires_in < 5) bg-warning @endif">
-                                        <td scope="row">{{ $booking->id }}</td>
-                                        <td>{{ $booking->room->room_number }}</td>
-                                        <td>{{ $booking->tenant->full_name }}</td>
-                                        <td>{{ $booking->duration . ' month(s)' }}</td>
-                                        <td>{{ $booking->from }}</td>
-                                        <td>{{ $booking->to }}</td>
+                            @isset($rents)
+                                @forelse ($rents as $rent)
+                                    <tr class="@if ($rent->expires_in == 0) bg-danger @elseif ($rent->expires_in < 5) bg-warning @endif">
+                                        <td scope="row">{{ $rent->id }}</td>
+                                        <td>{{ $rent->room->room_number }}</td>
+                                        <td>{{ $rent->tenant->full_name }}</td>
+                                        <td>{{ $rent->duration . ' month(s)' }}</td>
+                                        <td>{{ $rent->from }}</td>
+                                        <td>{{ $rent->to }}</td>
                                         <td>
                                             {{ 
-                                                ($booking->expires_in > 0 ) ? $booking->expires_in . 
+                                                ($rent->expires_in > 0 ) ? $rent->expires_in . 
                                                 ' days' : 'expired' 
                                             }} 
                                         </td>
-                                        <td>{{ 'Gh¢'.$booking->amount }}</td>
-                                        {{-- <td>{{ 'Gh¢'.$booking->balance }}</td> --}}
-                                        <td>{{ $booking->updated_at->diffForHumans(null,false,true) }}</td>
+                                        <td>{{ 'Gh¢'.$rent->amount }}</td>
+                                        {{-- <td>{{ 'Gh¢'.$rent->balance }}</td> --}}
+                                        <td>{{ $rent->updated_at->diffForHumans(null,false,true) }}</td>
                                         <td>
-                                            <a href="{{ route('bookings.show', ['booking' => $booking->id]) }}" class="btn btn-info btn-block shadow disabled">
+                                            <a href="{{ route('rents.show', ['rent' => $rent->id]) }}" class="btn btn-info btn-block shadow disabled">
                                                 <i class="fas fa-eye fa-sm fa-fw"></i>
                                                 Edit
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('bookings.edit', ['booking' => $booking->id]) }}" class="btn btn-warning btn-block shadow">
+                                            <a href="{{ route('rents.edit', ['rent' => $rent->id]) }}" class="btn btn-warning btn-block shadow">
                                                 <i class="fas fa-pen-fancy fa-sm fa-fw"></i>
                                                 Edit
                                             </a>
                                         </td>
                                         <td>
-                                            {!! Form::open(['route' => ['bookings.destroy', 'booking' => $booking->id], 'method' => 'DELETE']) !!}
+                                            {!! Form::open(['route' => ['rents.destroy', 'rent' => $rent->id], 'method' => 'DELETE']) !!}
                                                 <button type="submit" class="btn btn-danger btn-block shadow"><i class="fas fa-trash fa-sm fa-fw"></i> Delete</button>
                                             {!! Form::close() !!}
                                         </td>
@@ -85,7 +85,7 @@
             </div>
         </div>
         <div class="@if ($layout === 'full') d-none @else col-md-4 col-lg-3 @endif">
-            @include('bookingsmanagement.partials.form')
+            @include('rentsmanagement.partials.form')
         </div>
     </div>
 @endsection
@@ -148,7 +148,7 @@
                     room_type.addEventListener('change', (event) => {
                         // console.log(room_type.value * duration.value);
                         const method = 'post',
-                            url = '/admin/booking/available-rooms',
+                            url = '/admin/rent/available-rooms',
                             data = {
                                 room_price : event.target.value,
                                 room_id : room_type.dataset.bookedroomid

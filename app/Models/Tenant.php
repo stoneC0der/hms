@@ -26,6 +26,6 @@ class Tenant extends Model
 
     public function book()
    {
-	    return $this->hasOne(Booking::class);
+	    return $this->hasOne(Rent::class);
    }
 }

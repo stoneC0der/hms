@@ -6,7 +6,7 @@ use App\Models\RoomType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 
-class StoreBookingRequest extends FormRequest
+class StoreRentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -48,7 +48,7 @@ class StoreBookingRequest extends FormRequest
         $roomType = RoomType::where('price', $this->room_type)->first();
         $from = Carbon::create($this->from);
         $to = Carbon::create($this->to);
-        $booking = [
+        $rent = [
             'room_id'   => $this->room_id,
             'tenant_id' => $this->tenant_id,
             'duration'  => $from->diffInMonths($to),
@@ -67,7 +67,7 @@ class StoreBookingRequest extends FormRequest
             'occupation' => $this->occupation,
             'where' => $this->where,
         ];
-        return ['tenant' => $tenant, 'booking' => $booking, 'room_type' => $roomType->type];
+        return ['tenant' => $tenant, 'rent' => $rent, 'room_type' => $roomType->type];
     }
     
 }
