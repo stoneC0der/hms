@@ -22,17 +22,7 @@
                     </div>    
                 @enderror
             @endif
-
-            <div class="form-group has-feedback @error('tenant_id') is-invalid @enderror">
-                {!! Form::hidden('tenant_id', Route::is('bookings.edit') ? $booked->tenant_id ?? old('tenant_id') : '', ['class' => 'form-control', 'id' => 'tenant_id', 'aria-describedby' => 'tenant_id', 'placeholder' => 'Number of months...']) !!}
-            </div>
-            {{-- TEMP:  remove error field has the user won't directly edit but still validate it on the server --}}
-            @error('tenant_id')
-                <div class="invalid-feedback" id="tenant_id">
-                    {{ $message }}
-                </div>    
-            @enderror
-            {{-- TODO:  fetch rooms based on room type --}}
+            
             <div class="form-group has-feedback @error('room_type') is-invalid @enderror">
                 {!! Form::label('room_type', 'Type of room', ['class' => 'form-control-label']) !!}
                 {!! Form::select('room_type', $roomTypes ?? null, $booked->room_type->price ?? old('room_type'), ['class' => 'custom-select', 'id' => 'room_type', 'data-bookedRoomId' => $booked->room_id ?? '', 'aria-describedby' => 'room_type', 'placeholder' => 'Select type of room...']) !!}

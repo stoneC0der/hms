@@ -29,7 +29,6 @@ class UpdateBookingRequest extends FormRequest
         return [
             'room_id'   => 'required|exists:rooms,id',
             'room_type' => 'required|exists:room_types,price',
-            'tenant_id' => 'required|exists:tenants,id',
             'from'      => 'required|date',
             'to'        => 'required|date',
             'amount'    => 'required|string',
@@ -39,8 +38,6 @@ class UpdateBookingRequest extends FormRequest
 
     public function processData($booking): object
     {
-        // TODO:  Remove duration from form fields and generate it base on date range from-to and save to database.
-
         // Handle room availability
         $new_room = Room::find($this->room_id);
         $old_room = $booking->room;
