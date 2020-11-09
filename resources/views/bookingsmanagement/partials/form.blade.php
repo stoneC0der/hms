@@ -54,7 +54,7 @@
                     {{ $message }}
                 </div>    
             @enderror
-
+            {{-- TODO:  Remove me (already done in backend) --}}
             <div class="form-group has-feedback @error('duration') is-invalid @enderror">
                 {!! Form::label('duration', 'duration', ['class' => 'form-control-label']) !!}
                 {!! Form::text('duration', Route::is('bookings.edit') ? $booked->duration ?? old('duration') : '', ['class' => 'form-control', 'id' => 'duration', 'aria-describedby' => 'duration', 'placeholder' => 'Number of months...']) !!}
@@ -67,7 +67,7 @@
 
             <div class="form-group has-feedback @error('from') is-invalid @enderror">
                 {!! Form::label('from', 'from', ['class' => 'form-control-label']) !!}
-                {!! Form::date('from', Route::is('bookings.edit') ? $booked->from ?? old('from') : '', ['class' => 'form-control', 'id' => 'from', 'aria-describedby' => 'from', 'placeholder' => '2020-12-09...']) !!}
+                {!! Form::date('from', Route::is('bookings.edit') ? $booked->from ?? old('from') : Carbon\Carbon::now(), ['class' => 'form-control', 'id' => 'from', 'aria-describedby' => 'from', 'placeholder' => '2020-12-09...']) !!}
             </div>
             @error('from')
                 <div class="invalid-feedback" id="from">
