@@ -95,10 +95,11 @@
         (function () {
             'use strict';
             window.addEventListener('DOMContentLoaded', (e) => {
-                let room_type = document.getElementById('room_type');
-                let duration = document.getElementById('duration');
+                let room_price = document.getElementById('room_type');
+                let start_date = document.getElementById('from');
+                let end_date = document.getElementById('to');
                 // display total to pay
-                calculateTotalPriceOfRent(room_type, duration);
+                calculateTotalPriceOfRent(room_price, start_date, end_date);
 
                 /**
                  * 
@@ -137,39 +138,45 @@
                 /**
                  * Calculate price of rent based on duration
                  * 
-                 * @param mixed room_type The price
-                 * @param mixed duration The number of month(s)
+                 * @param mixed room_price The room price
+                 * @param mixed start_date The date the rent start
+                 * @param mixed end_date The date the rent expires
                  * 
                  * @return void
                  */
-                function calculateTotalPriceOfRent (room_type, duration) {
+                function calculateTotalPriceOfRent (room_price, start_date, end_date) {
                     let total_amount = document.getElementById('amount');
 
-                    room_type.addEventListener('change', (event) => {
-                        // console.log(room_type.value * duration.value);
+                    room_price.addEventListener('change', (event) => {
+                        // console.log(room_price.value * duration.value);
                         const method = 'post',
                             url = '/admin/rent/available-rooms',
                             data = {
                                 room_price : event.target.value,
-                                room_id : room_type.dataset.bookedroomid
+                                room_id : room_price.dataset.bookedroomid
                             };
-                        if (room_type.value == 0) {
+                        if (room_price.value == 0) {
                             return clearErrorMessages();
                         }
                         ajax(method, url, data, true);
+                        // TODO:  Check start and end date (if st == end, std < end, not selected)
                         if (duration.value == 0) {
+                            /** 
+                            * Do the calculation here (duration between dates in months) using vanilla js or library like * moment.js
+                            * Read momemt.js doc where they say you might not need moment.js
+                            */
                             total_amount.value = 0;
                             return;
                         }
-                        total_amount.value = room_type.value * duration.value;
+                        total_amount.value = room_price.value * duration.value;
                     });
                     duration.addEventListener('focusout', (event) => {
-                        // console.log(room_type.value * duration.value);
-                        total_amount.value = room_type.value * duration.value;
+                        // console.log(room_price.value * duration.value);
+                        total_amount.value = room_price.value * duration.value;
                         if (duration == undefined) {
                             return;
                         }
-                        total_amount.value = room_type.value * duration.value;
+                        total_amount.value = room_price.value * duration.value;
                     });
                 }
 
