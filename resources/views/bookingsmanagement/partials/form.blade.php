@@ -44,16 +44,6 @@
                     {{ $message }}
                 </div>    
             @enderror
-            {{-- TODO:  Remove me (already done in backend) --}}
-            <div class="form-group has-feedback @error('duration') is-invalid @enderror">
-                {!! Form::label('duration', 'duration', ['class' => 'form-control-label']) !!}
-                {!! Form::text('duration', Route::is('bookings.edit') ? $booked->duration ?? old('duration') : '', ['class' => 'form-control', 'id' => 'duration', 'aria-describedby' => 'duration', 'placeholder' => 'Number of months...']) !!}
-            </div>
-            @error('duration')
-                <div class="invalid-feedback" id="duration">
-                    {{ $message }}
-                </div>    
-            @enderror
 
             <div class="form-group has-feedback @error('from') is-invalid @enderror">
                 {!! Form::label('from', 'from', ['class' => 'form-control-label']) !!}
