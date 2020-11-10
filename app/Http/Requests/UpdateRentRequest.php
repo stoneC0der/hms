@@ -60,8 +60,8 @@ class UpdateRentRequest extends FormRequest
         $rent->room_type_id  = $new_room->type->id;
         $rent->from      = $this->from;
         $rent->to    = $this->to;
-        $rent->amount    = $this->amount;
-        $rent->duration  = ($this->amount != $total_amount) ? $total_amount : $this->amount;
+        $rent->amount    = ($this->amount != $total_amount) ? $total_amount : $this->amount;
+        $rent->duration  = $duration;
         // $rent->balance   = $this->balance;
 
         return $rent;
