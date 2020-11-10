@@ -39,18 +39,21 @@
                         <tbody>
                             @isset($rents)
                                 @forelse ($rents as $rent)
-                                    <tr class="@if ($rent->expires_in == 0) bg-danger @elseif ($rent->expires_in < 5) bg-warning @endif">
+                                    <tr class="@if ($rent->expires_in < 0) bg-danger @elseif ($rent->expires_in < 5) bg-warning @endif">
                                         <td scope="row">{{ $rent->id }}</td>
                                         <td>{{ $rent->room->room_number }}</td>
                                         <td>{{ $rent->tenant->full_name }}</td>
                                         <td>{{ $rent->duration . ' month(s)' }}</td>
-                                        <td>{{ $rent->from }}</td>
-                                        <td>{{ $rent->to }}</td>
+                                        <td>{{ $rent->from->toDateString() }}</td>
+                                        <td>{{ $rent->to->toDateString() }}</td>
                                         <td>
-                                            {{ 
-                                                ($rent->expires_in > 0 ) ? $rent->expires_in . 
-                                                ' days' : 'expired' 
-                                            }} 
+                                            @if ($rent->expires_in == 0 )
+                                                {!! __('Tomorrow') !!}
+                                            @elseif ($rent->expires < 0 ) 
+                                                {!! __('expired') !!}
+                                            @else
+                                                {{ $rent->expires_in . ' days' }}
+                                            @endif
                                         </td>
                                         <td>{{ 'Gh¢'.$rent->amount }}</td>
                                         {{-- <td>{{ 'Gh¢'.$rent->balance }}</td> --}}
