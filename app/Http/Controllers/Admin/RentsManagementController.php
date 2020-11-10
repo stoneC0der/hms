@@ -183,7 +183,7 @@ class RentsManagementController extends Controller
             
             $validator = Validator::make((array)$roomInfos,[
                 'room_price' => 'required|exists:room_types,price',
-                'room_id'   => 'required|exists:rooms,id',
+                'room_id'   => 'nullable|exists:rooms,id',
             ],[
                 'room_type.require' => 'Room type no provided!',
                 'room_type.exists'  => 'Room type no found!',
@@ -195,7 +195,11 @@ class RentsManagementController extends Controller
             }
 
             $room_type = RoomType::where('price', $roomInfos->room_price)->first()->id;
-            $room = Room::where('id', $roomInfos->room_id)->first()->id;
+            if ($roomInfos->room_id) {
+                $room = Room::where('id', $roomInfos->room_id)->first()->id;
+            }else {
+                $room = null;
+            }
             $available_rooms = Room::available($room_type, $room)->pluck('room_number', 'id');
             $data = [
                 'message' => 'Success!',
