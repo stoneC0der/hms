@@ -34,7 +34,9 @@
 
         {{-- Content Wrapper --}}
         <div class="content-wrapper {{ config('adminlte.classes_content_wrapper') ?? '' }}">
-
+            <div class="container">
+                <div class="pt-3">@include('flash::message')</div>
+            </div>
             {{-- Content Header --}}
             <div class="content-header">
                 <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
@@ -67,4 +69,7 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
+    <script>
+        $('div.alert').not('.alert-important').delay(5000).fadeOut(350);   
+    </script>
 @stop
