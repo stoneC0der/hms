@@ -98,8 +98,9 @@
                 let room_price = document.getElementById('room_type');
                 let start_date = document.getElementById('from');
                 let end_date = document.getElementById('to');
+                const _MS_PER_DAY = 1000 * 60 * 60 * 24;
                 // display total to pay
-                calculateTotalPriceOfRent(room_price, start_date, end_date);
+                calculateTotalPriceOfRent(room_price, start_date, end_date,_MS_PER_DAY);
 
                 /**
                  * 
@@ -144,11 +145,10 @@
                  * 
                  * @return void
                  */
-                function calculateTotalPriceOfRent (room_price, start_date, end_date) {
+                function calculateTotalPriceOfRent (room_price, start_date, end_date, _MS_PER_DAY) {
                     let total_amount = document.getElementById('amount');
 
                     room_price.addEventListener('change', (event) => {
-                        // console.log(room_price.value * duration.value);
                         const method = 'post',
                             url = '/admin/rent/available-rooms',
                             data = {
@@ -160,24 +160,35 @@
                         }
                         ajax(method, url, data, true);
                         // TODO:  Check start and end date (if st == end, std < end, not selected)
-                        if (duration.value == 0) {
-                            /** 
-                            * Do the calculation here (duration between dates in months) using vanilla js or library like * moment.js
-                            * Read momemt.js doc where they say you might not need moment.js
-                            */
+                        if (end_date.value == 0 || end_date.value === "") {
                             total_amount.value = 0;
                             return;
                         }
-                        total_amount.value = room_price.value * duration.value;
+                        total_amount.value = room_price.value * diffInMonths(start_date.value, end_date.value, _MS_PER_DAY);
                     });
-                    duration.addEventListener('focusout', (event) => {
-                        // console.log(room_price.value * duration.value);
-                        total_amount.value = room_price.value * duration.value;
-                        if (duration == undefined) {
+                    end_date.addEventListener('change', (event) => {
+                        // console.log(room_price.value * diffInMonths(start_date.value, end_date.value, _MS_PER_DAY), diffInMonths(start_date.value, end_date.value, _MS_PER_DAY));
+                        // total_amount.value = room_price.value * diffInMonths(start_date.value, end_date.value, _MS_PER_DAY);
+                        if (end_date.value === "" || end_date.value == 0) {
                             return;
                         }
-                        total_amount.value = room_price.value * duration.value;
+                        total_amount.value = room_price.value * diffInMonths(start_date.value, end_date.value, _MS_PER_DAY);
                     });
+                }
+
+                function diffInMonths(start_date, end_date, diffIn) {
+                    // Discard the time-zone info
+                    start_date = new Date(start_date);
+                    end_date = new Date(end_date);
+                    // console.log(end_date > start_date);
+                    if (end_date <= start_date) {
+                        window.alert('Invalid date! the end date should not be less than the start date.');
+                        return;
+                    }
+                    const utc_std = Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate());
+                    const utc_end = Date.UTC(end_date.getFullYear(), end_date.getMonth(), end_date.getDate());
+                    const diff_in_days = Math.floor((utc_end - utc_std) / diffIn);
+                    return Math.round(diff_in_days / 31);
                 }
 
                 function displayAvailableRooms(rooms) {

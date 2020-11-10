@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Rent;
 use App\Models\Room;
+use App\Models\RoomType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 
@@ -38,12 +39,20 @@ class UpdateRentRequest extends FormRequest
 
     public function processData($rent): object
     {
+        // Make sure we have the correct room price
+        $roomType = RoomType::where('price', $this->room_type)->first();
         // Handle room availability
         $new_room = Room::find($this->room_id);
         $old_room = $rent->room;
         if ($new_room != $old_room) {
             $this->setRoomAvailability($new_room, $old_room);
         }
+        // Set duration
+        $from = Carbon::create($this->from);
+        $to = Carbon::create($this->to);
+        $duration = $from->diffInMonths($to);
+        // Recalculate total amount
+        $total_amount = $roomType->price * $duration;
         
         // TODO:  add image upload.
         $rent->room_id   = $this->room_id;
@@ -52,10 +61,7 @@ class UpdateRentRequest extends FormRequest
         $rent->from      = $this->from;
         $rent->to    = $this->to;
         $rent->amount    = $this->amount;
-        // Set duration
-        $from = Carbon::create($this->from);
-        $to = Carbon::create($this->to);
-        $rent->duration  = $from->diffInMonths($to);
+        $rent->duration  = ($this->amount != $total_amount) ? $total_amount : $this->amount;
         // $rent->balance   = $this->balance;
 
         return $rent;

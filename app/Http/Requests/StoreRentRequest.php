@@ -45,17 +45,23 @@ class StoreRentRequest extends FormRequest
 
     public function processData()
     {
+        // Make sure we get the actual price
         $roomType = RoomType::where('price', $this->room_type)->first();
+        // Calculate duration NOTE:  This is already done in front-end for price calculation so, it can directly pull from there and just compare here.
         $from = Carbon::create($this->from);
         $to = Carbon::create($this->to);
+        $duration = $from->diffInMonths($to);
+        // Recalculate total amount
+        $total_amount = $roomType->price * $duration;
+
         $rent = [
             'room_id'   => $this->room_id,
             'tenant_id' => $this->tenant_id,
-            'duration'  => $from->diffInMonths($to),
+            'duration'  => $duration,
             'from'      => $this->from,
             'to'        => $this->to,
             'room_type_id'  => $roomType->id,
-            'amount'    => $this->amount,
+            'amount'    => ($this->amount != $total_amount) ? $total_amount : $this->amount,
             // 'balance'   => $this->balance,
         ];
         $tenant = [
