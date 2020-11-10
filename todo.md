@@ -7,3 +7,4 @@
 - Add image upload for tenant info
 - Diff between single room with & w\t bathroom
 - Add pivot table for room & rent
+- Fix bug when updating expired rent
