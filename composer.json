@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/date": "^4.0",
         "jeroennoten/laravel-adminlte": "^3.5",
+        "laracasts/flash": "^3.2",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
