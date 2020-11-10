@@ -47,7 +47,7 @@
 
             <div class="form-group has-feedback @error('from') is-invalid @enderror">
                 {!! Form::label('from', 'from', ['class' => 'form-control-label']) !!}
-                {!! Form::date('from', Route::is('rents.edit') ? $booked->from ?? old('from') : Carbon\Carbon::now(), ['class' => 'form-control', 'id' => 'from', 'aria-describedby' => 'from', 'placeholder' => '2020-12-09...']) !!}
+                {!! Form::date('from', Route::is('rents.edit') ? $booked->from ?? old('from') : Carbon\Carbon::now(), ['class' => 'form-control', 'id' => 'from', 'aria-describedby' => 'from', 'placeholder' => '2020-12-09...', 'min' => Carbon\Carbon::now()->toDateString(), 'step' => 1, 'required' => true]) !!}
             </div>
             @error('from')
                 <div class="invalid-feedback" id="from">
@@ -57,7 +57,7 @@
 
             <div class="form-group has-feedback @error('to') is-invalid @enderror">
                 {!! Form::label('to', 'to', ['class' => 'form-control-label']) !!}
-                {!! Form::date('to', Route::is('rents.edit') ? $booked->to ?? old('to') : '', ['class' => 'form-control', 'id' => 'to', 'aria-describedby' => 'to', 'placeholder' => '2020-12-25...']) !!}
+                {!! Form::date('to', Route::is('rents.edit') ? $booked->to ?? old('to') : '', ['class' => 'form-control', 'id' => 'to', 'aria-describedby' => 'to', 'placeholder' => '2020-12-25...', 'min' => Carbon\CarbonImmutable::now()->add(30, 'day')->toDateString(), 'step' => 1, 'required' => true]) !!}
             </div>
             @error('to')
                 <div class="invalid-feedback" id="to">
