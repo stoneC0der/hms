@@ -24,13 +24,11 @@ class RentsManagementController extends Controller
      */
     public function index()
     {
-        $rents = Rent::paginate(25);
+        $rents = Rent::with('tenant','room')->paginate(25);
         $layout = 'full';
-        $rooms  = Room::pluck('room_number', 'id');
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
-        $roomTypes = RoomType::pluck('type', 'price');
 
-        return view('rentsmanagement.index', compact('rents', 'layout', 'rooms', 'occupations', 'roomTypes'));
+        return view('rentsmanagement.index', compact('rents', 'layout', 'occupations'));
     }
 
     /**
@@ -40,7 +38,7 @@ class RentsManagementController extends Controller
      */
     public function create()
     {
-        $rents = Rent::paginate(25);
+        $rents = Rent::with(['tenant','room'])->paginate(25);
         $layout = 'split';
         $rooms  = Room::allAvailable()->pluck('room_number', 'id');
         $occupations = ['student' => 'Student', 'worker' => 'Worker'];
@@ -126,12 +124,13 @@ class RentsManagementController extends Controller
      */
     public function edit(Rent $rent)
     {
-        $rents = Rent::paginate(25);
-        $layout = 'split';
+        $rents = Rent::with(['tenant', 'room'])->paginate(25);
         $rooms  = Room::available($rent->room_type_id, $rent->room_id)->pluck('room_number', 'id');
-        $booked = $rent;
-        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
         $roomTypes = RoomType::pluck('type', 'price');
+
+        $occupations = ['student' => 'Student', 'worker' => 'Worker'];
+        $booked = $rent;
+        $layout = 'split';
 
         return view('rentsmanagement.index', compact('layout', 'rents', 'rooms', 'booked', 'occupations', 'roomTypes'));
     }

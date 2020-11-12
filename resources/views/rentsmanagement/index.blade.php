@@ -88,7 +88,9 @@
             </div>
         </div>
         <div class="@if ($layout === 'full') d-none @else col-md-4 col-lg-3 @endif">
-            @include('rentsmanagement.partials.form')
+            @if (Route::is(['rents.create','rents.edit']))
+                @include('rentsmanagement.partials.form')
+            @endif
         </div>
     </div>
 @endsection

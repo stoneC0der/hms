@@ -18,7 +18,7 @@ class RoomsManagementController extends Controller
      */
     public function index()
     {
-        $rooms = Room::paginate(25);
+        $rooms = Room::with(['type'])->paginate(25);
         $layout = 'full';
         $roomTypes = RoomType::pluck('type', 'id');
 
@@ -61,7 +61,7 @@ class RoomsManagementController extends Controller
      */
     public function show(Room $room)
     {
-        $rooms = Room::paginate(25);
+        $rooms = Room::with(['type'])->paginate(25);
         $layout = 'split';
         $roomTypes = RoomType::pluck('type', 'id');
 
@@ -76,7 +76,7 @@ class RoomsManagementController extends Controller
      */
     public function edit(Room $room)
     {
-        $rooms = Room::paginate(25);
+        $rooms = Room::with(['type'])->paginate(25);
         $layout = 'split';
         $e_room = $room;
         $roomTypes = RoomType::pluck('type', 'id');

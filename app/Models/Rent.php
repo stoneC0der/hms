@@ -52,10 +52,12 @@ class Rent extends Model
     public function getExpiresInAttribute()
     {
         $now = Carbon::now();
-        if ($this->to->eq($now) || $this->to->lt($now)) {
-            $this->expired = boolval(true);
-            $this->save();
-            return 0;
+        if (!$this->expired) {
+            if ($this->to->eq($now) || $this->to->lt($now)) {
+                $this->expired = boolval(true);
+                $this->save();
+                return 0;
+            }
         }
         return $this->to->diffInDays(Carbon::now());
     }
