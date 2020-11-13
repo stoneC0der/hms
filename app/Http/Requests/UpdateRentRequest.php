@@ -50,7 +50,16 @@ class UpdateRentRequest extends FormRequest
         // Set duration
         $from = Carbon::create($this->from);
         $to = Carbon::create($this->to);
-        $duration = $from->diffInMonths($to);
+        $first_part = '';
+
+        if ($from->year < $to->year) {
+            $first_part = $from->diffInMonths(Carbon::createFromDate($from->year.'-12-31'), true);
+            $second_part = Carbon::createFromDate($from->year + 1 .'-01-01')->diffInMonths($to);
+            $duration = $first_part + $second_part;
+        }else {
+            $duration = $from->diffInMonths($to);
+        }
+        dd($first_part, $duration, $second_part, $from, $to);
         // Recalculate total amount
         $total_amount = $roomType->price * $duration;
         
